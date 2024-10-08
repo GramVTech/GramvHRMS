@@ -29,5 +29,14 @@ public class main_menu extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        findViewById(R.id.consultation).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(main_menu.this, Permission_Request.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }

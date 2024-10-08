@@ -16,6 +16,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Permission_Request"
+            android:exported="false" />
+        <activity
             android:name=".leave_Request"
             android:exported="false" />
         <activity
