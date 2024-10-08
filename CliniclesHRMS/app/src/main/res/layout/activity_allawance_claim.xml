@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/leave_request"
+    android:id="@+id/allowance_claim"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".leave_Request">
+    tools:context=".Allawance_Claim">
 
     <TextView
         android:id="@+id/textView5"
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/kanit_medium"
-        android:text="LEAVE REQUEST"
+        android:text="CLAIM ALLOWANCE"
         android:textColor="@color/red"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,34 +44,21 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/kanit_light"
-                android:text="Enter the Subject"
+                android:text="Enter the Allowance Reason"
                 android:textColor="@color/purple"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/editTextTextdob" />
 
             <TextView
                 android:id="@+id/textView11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
                 android:fontFamily="@font/kanit_light"
-                android:text="Enter the From Date"
+                android:text="Enter the Amount"
                 android:textColor="@color/purple"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/multiLineEditText" />
-
-            <TextView
-                android:id="@+id/textView12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/kanit_light"
-                android:text="Enter the To Date"
-                android:textColor="@color/purple"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTextdob" />
+                tools:layout_editor_absoluteY="104dp" />
 
             <TextView
                 android:id="@+id/textView15"
@@ -80,22 +67,22 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/kanit_light"
-                android:text="Your Reporting Person"
+                android:text="Your Allowance Approval Person"
                 android:textColor="@color/purple"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner" />
+                app:layout_constraintTop_toBottomOf="@+id/multiLineEditText" />
 
             <TextView
-                android:id="@+id/textView13"
+                android:id="@+id/textView16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/kanit_light"
-                android:text="Select the Type of Leave"
+                android:text="Allowance Type"
                 android:textColor="@color/purple"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView14" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/multiLineEditText"
@@ -107,7 +94,7 @@
                 android:background="@drawable/edit_text_background"
                 android:fontFamily="@font/kanit_light"
                 android:gravity="top|start"
-                android:hint="Enter your Reson here"
+                android:hint="Enter your Remarks"
                 android:inputType="textMultiLine"
                 android:maxLines="5"
                 android:minLines="3"
@@ -130,59 +117,13 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:fontFamily="@font/kanit_light"
-                android:hint="From Date"
+                android:hint="Amount in Rs"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:paddingLeft="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView11" />
-
-            <EditText
-                android:id="@+id/editTextTextdob2"
-                android:layout_width="0dp"
-                android:layout_height="50sp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/edit_text_background"
-                android:drawablePadding="10dp"
-                android:ems="10"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:fontFamily="@font/kanit_light"
-                android:hint="To Date"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:paddingLeft="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView12" />
-
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="0dp"
-                android:layout_height="50sp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/edit_text_background"
-                android:paddingLeft="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView13" />
-
-            <TextView
-                android:id="@+id/textView14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:fontFamily="@font/kanit_medium"
-                android:text="No Of Days : 2"
-                android:textColor="@color/red"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTextdob2" />
 
             <EditText
                 android:id="@+id/editTextText"
@@ -195,7 +136,7 @@
                 android:ems="10"
                 android:enabled="false"
                 android:fontFamily="@font/kanit_medium"
-                android:hint="Reporting Person"
+                android:text="Admin"
                 android:inputType="text"
                 android:padding="10sp"
                 android:textColor="@color/red"
@@ -226,6 +167,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editTextText" />
 
+            <Spinner
+                android:id="@+id/spinner2"
+                android:layout_width="0dp"
+                android:layout_height="50sp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/edit_text_background"
+                android:paddingLeft="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
             <TextView
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"
@@ -239,4 +193,5 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

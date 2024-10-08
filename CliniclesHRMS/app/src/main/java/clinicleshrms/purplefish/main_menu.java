@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -31,6 +30,14 @@ public class main_menu extends AppCompatActivity {
         });
 
         findViewById(R.id.consultation).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(main_menu.this, Permission_Request.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.chat_live).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(main_menu.this, Permission_Request.class);
