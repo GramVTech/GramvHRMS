@@ -29,6 +29,14 @@ public class main_menu extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.video_section).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(main_menu.this, leave_approval.class);
+                startActivity(intent);
+            }
+        });
+
         findViewById(R.id.consultation).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -37,13 +45,31 @@ public class main_menu extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.chat_live).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.chat).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(main_menu.this, Permission_Request.class);
+                Intent intent = new Intent(main_menu.this, permission_approval.class);
                 startActivity(intent);
             }
         });
+
+        findViewById(R.id.chat_live).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(main_menu.this, Allawance_Claim.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.allowance).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(main_menu.this, Allowance_approval.class);
+                startActivity(intent);
+            }
+        });
+
+
 
     }
 }
