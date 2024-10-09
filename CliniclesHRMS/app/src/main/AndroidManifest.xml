@@ -16,6 +16,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".wfh_history"
+            android:exported="false" />
+        <activity
+            android:name=".wfh_approval"
+            android:exported="false" />
+        <activity
+            android:name=".WFH_Request"
+            android:exported="false" />
+        <activity
             android:name=".Daily_attendance"
             android:exported="false" />
         <activity

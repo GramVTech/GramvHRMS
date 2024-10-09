@@ -459,7 +459,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@mipmap/chat" />
+                    app:srcCompat="@mipmap/wfh" />
 
                 <TextView
                     android:id="@+id/textViewech77108"
@@ -468,7 +468,7 @@
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="2dp"
                     android:fontFamily="@font/kanit_medium"
-                    android:text="CHAT"
+                    android:text="WFH REQUEST"
                     android:textColor="@color/red"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -508,7 +508,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@mipmap/logout" />
+                    app:srcCompat="@mipmap/validation" />
 
                 <TextView
                     android:id="@+id/textViewech710008"
@@ -517,7 +517,7 @@
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="2dp"
                     android:fontFamily="@font/kanit_medium"
-                    android:text="LOGOUT"
+                    android:text="WFH APPROVAL"
                     android:textColor="@color/red"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -539,6 +539,30 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+        <ImageView
+            android:id="@+id/imageView12"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintBottom_toTopOf="@+id/horoscope"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/chat" />
+
+        <ImageView
+            android:id="@+id/imageView13"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintBottom_toTopOf="@+id/horoscope"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/logout" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,6 +21,14 @@ public class main_menu extends AppCompatActivity {
             return insets;
         });
 
+        findViewById(R.id.horoscope).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(main_menu.this, Daily_attendance.class);
+                startActivity(intent);
+            }
+        });
+
         findViewById(R.id.profile).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,6 +82,40 @@ public class main_menu extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(main_menu.this, Allowance_approval.class);
                 startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.profilev).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(main_menu.this, WFH_Request.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.logout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(main_menu.this, wfh_approval.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.imageView12).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
+
+        findViewById(R.id.imageView13).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
+
+        findViewById(R.id.textView8).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
             }
         });
 
