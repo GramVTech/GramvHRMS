@@ -1,5 +1,6 @@
 package clinicleshrms.purplefish;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -22,6 +23,22 @@ public class Daily_attendance extends AppCompatActivity {
         });
 
         findViewById(R.id.imageView14).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Daily_attendance.this, Daily_attendance_Edit.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.imageView17).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Daily_attendance.this, Daily_attendance_View.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.button6).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
