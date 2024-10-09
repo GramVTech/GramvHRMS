@@ -13,7 +13,6 @@ public class permission_approval extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_permission_approval);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.permission_approval), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

@@ -16,6 +16,24 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".My_Salary_Slip"
+            android:exported="false" />
+        <activity
+            android:name=".My_Attendance"
+            android:exported="false" />
+        <activity
+            android:name=".Profile"
+            android:exported="false" />
+        <activity
+            android:name=".permission_history"
+            android:exported="false" />
+        <activity
+            android:name=".leave_history"
+            android:exported="false" />
+        <activity
+            android:name=".Allowance_history"
+            android:exported="false" />
+        <activity
             android:name=".Allowance_approval"
             android:exported="false" />
         <activity

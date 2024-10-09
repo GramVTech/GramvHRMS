@@ -21,6 +21,14 @@ public class main_menu extends AppCompatActivity {
             return insets;
         });
 
+        findViewById(R.id.profile).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(main_menu.this, Profile.class);
+                startActivity(intent);
+            }
+        });
+
         findViewById(R.id.e_store).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

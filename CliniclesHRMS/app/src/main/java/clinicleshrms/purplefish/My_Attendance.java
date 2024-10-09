@@ -8,16 +8,18 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class Allowance_approval extends AppCompatActivity {
+public class My_Attendance extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_allowance_approval);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.allowance_approval), (v, insets) -> {
+        setContentView(R.layout.activity_my_attendance);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.my_attendance), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
     }
 }
