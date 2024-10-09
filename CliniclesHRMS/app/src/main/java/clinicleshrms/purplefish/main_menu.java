@@ -101,15 +101,11 @@ public class main_menu extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.imageView12).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
-
         findViewById(R.id.imageView13).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(main_menu.this, Logout.class);
+                startActivity(intent);
             }
         });
 

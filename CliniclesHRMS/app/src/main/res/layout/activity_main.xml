@@ -59,7 +59,7 @@
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/edit_text_background"
                 android:fontFamily="@font/kanit_extralight"
-                android:hint="Enter The Username"
+                android:hint="Enter The Mobile Number"
                 android:inputType="text"
                 android:padding="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
