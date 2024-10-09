@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/allowance_approval"
+    android:id="@+id/daily_attendance"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Allowance_approval">
+    tools:context=".Daily_attendance">
 
     <TextView
         android:id="@+id/textView24"
@@ -14,8 +14,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:text="ALLOWANCE APPROVAL"
-        android:fontFamily="@font/kanit_medium"
+        android:text="ATTENDANCE DATE : 24-05-2025"
+        android:fontFamily="@font/kanit_light"
         android:textSize="20sp"
         android:textColor="@color/red"
         app:layout_constraintEnd_toEndOf="parent"
