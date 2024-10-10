@@ -21,6 +21,8 @@ public class main_menu extends AppCompatActivity {
             return insets;
         });
 
+        findViewById(R.id.imageView18).setVisibility(View.GONE);
+
         findViewById(R.id.horoscope).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,6 +108,20 @@ public class main_menu extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(main_menu.this, Logout.class);
                 startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.imageView18).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 
