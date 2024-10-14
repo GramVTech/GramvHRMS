@@ -1,8 +1,10 @@
 package clinicleshrms.purplefish;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -12,6 +14,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +38,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -44,7 +49,7 @@ import java.util.Locale;
 public class main_menu extends AppCompatActivity {
 
     EasyLocationProvider easyLocationProvider;
-    String Saddress="";
+    String Saddress="",slat_lon="";
     ProgressDialog progressDialog;
     String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION};
     int permission_All = 1;
@@ -53,10 +58,14 @@ public class main_menu extends AppCompatActivity {
     StringBuffer sb = new StringBuffer();
     String json_url = Url_interface.url+"notification_leave_permission_wfh_count.php";
     String json_string="";
-
+    Button check_in_out_button;
     StringBuffer sb2 = new StringBuffer();
     String json_url2 = Url_interface.url+"Check_WFH_Apply_Or_Not_And_In_or_Out_status.php";
     String json_string2="";
+    StringBuffer sb3 = new StringBuffer();
+    String json_url3 = Url_interface.url+"Check_in.php";
+    String json_string3="";
+    String sremarks="",spost_data="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,7 +182,19 @@ public class main_menu extends AppCompatActivity {
         findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(check_in_out_button.getText().equals("CHECK IN")) {
+                    try {
+                        spost_data = URLEncoder.encode("mobile","UTF-8")+"="+URLEncoder.encode(sessionMaintance.get_user_mail(),"UTF-8")+"&"
+                                +URLEncoder.encode("loc","UTF-8")+"="+ URLEncoder.encode(Saddress,"UTF-8")+"&"
+                                +URLEncoder.encode("lat_lon","UTF-8")+"="+ URLEncoder.encode(slat_lon,"UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        throw new RuntimeException(e);
+                    }
+                    progressDialog.show();
+                    getLoc();
+                }else if(check_in_out_button.getText().equals("CHECK OUT")) {
+                    showInputDialog();
+                }
             }
         });
 
@@ -191,6 +212,38 @@ public class main_menu extends AppCompatActivity {
 
     }
 
+    private void showInputDialog() {
+        final EditText input = new EditText(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Enter your Remarks");
+        builder.setView(input);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sremarks = input.getText().toString();
+                json_url3 = Url_interface.url+"Check_out.php";
+                try {
+                    spost_data = URLEncoder.encode("mobile","UTF-8")+"="+URLEncoder.encode(sessionMaintance.get_user_mail(),"UTF-8")+"&"
+                            +URLEncoder.encode("loc","UTF-8")+"="+ URLEncoder.encode(Saddress,"UTF-8")+"&"
+                            +URLEncoder.encode("lat_lon","UTF-8")+"="+ URLEncoder.encode(slat_lon,"UTF-8")+"&"
+                            +URLEncoder.encode("remarks","UTF-8")+"="+ URLEncoder.encode(sremarks,"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    throw new RuntimeException(e);
+                }
+                progressDialog.show();
+                getLoc();
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
     public void intialise(){
 
         progressDialog = new ProgressDialog(main_menu.this);
@@ -204,6 +257,7 @@ public class main_menu extends AppCompatActivity {
 
         sessionMaintance = new SessionMaintance(main_menu.this);
 
+        check_in_out_button = findViewById(R.id.button2);
     }
 
     public void getpermission(){
@@ -213,7 +267,6 @@ public class main_menu extends AppCompatActivity {
                         PackageManager.PERMISSION_GRANTED) {
             return;
         }else {
-            getLoc();
         }
     }
 
@@ -240,6 +293,8 @@ public class main_menu extends AppCompatActivity {
                     public void onLocationUpdated(double latitude, double longitude) {
                         Log.e("EasyLocationProvider","onLocationUpdated:: "+ "Latitude: "+latitude+" Longitude: "+longitude);
                         Saddress = getCompleteAddressString(latitude,longitude);
+                        slat_lon = String.valueOf(latitude)+","+String.valueOf(longitude);
+                        new backgroundworker3().execute();
                         easyLocationProvider.removeUpdates();
                         getLifecycle().removeObserver(easyLocationProvider);
 
@@ -405,6 +460,67 @@ public class main_menu extends AppCompatActivity {
                     findViewById(R.id.button2).setVisibility(View.GONE);
                 }else{
                     findViewById(R.id.button2).setVisibility(View.VISIBLE);
+                    check_in_out_button.setText(json_string2.split("-")[2]);
+                }
+            }catch (Exception e){
+
+            }
+        }
+    }
+
+    public class backgroundworker3 extends AsyncTask<Void,Void,String> {
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            URL url= null;
+            try {
+                url = new URL(json_url3);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            try {
+                sb3=new StringBuffer();
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data = spost_data;
+                bufferedWriter.write(post_data);
+                Log.d("PostData",""+post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+                InputStream inputStream=httpURLConnection.getInputStream();
+                BufferedReader bufferedReader =new BufferedReader(new InputStreamReader(inputStream));
+                while((json_string3=bufferedReader.readLine())!=null)
+                {
+                    sb3.append(json_string3+"\n");
+                    Log.d("json_string2",""+json_string3);
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                Log.d("GGG",""+sb3.toString());
+                return sb3.toString().trim();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            json_string3 = result;
+            progressDialog.dismiss();
+            try{
+                if(json_string3.equals("NO")){
+                    Toast.makeText(main_menu.this, "Contact Admin", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(main_menu.this, "Check in Happended", Toast.LENGTH_SHORT).show();
+                    check_in_out_button.setText("CHECK OUT");
                 }
             }catch (Exception e){
 
