@@ -51,7 +51,8 @@ public class main_menu extends AppCompatActivity {
     EasyLocationProvider easyLocationProvider;
     String Saddress="",slat_lon="";
     ProgressDialog progressDialog;
-    String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION};
+    String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION,
+    Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
     int permission_All = 1;
     TextView Txt_leave_notf,Txt_per_notf,Txt_all_notf,Txt_wfh_notf;
     SessionMaintance sessionMaintance;
