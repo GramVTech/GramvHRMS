@@ -10,6 +10,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,14 +50,16 @@ public class Allawance_Claim extends AppCompatActivity {
     TextView tfilename;
     ProgressDialog progressDialog;
     SessionMaintance sessionMaintance;
-
     StringBuffer sb = new StringBuffer();
     String json_url = Url_interface.url+"Allowance/Allowance_list.php";
     String json_string="";
-
     List<String> allowanceList = new ArrayList<>();
-
     Spinner allowance_Spinner;
+    EditText eallowance_Amount,emultiLineEditText;
+    String sallowance_amount="",sallowance_type="",sremarks="",sencoded_result="";
+    StringBuffer sb2 = new StringBuffer();
+    String json_url2 = Url_interface.url+"Allowance/Allowance_Request.php";
+    String json_string2="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +84,11 @@ public class Allawance_Claim extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 processCapturedPhotos();
+                sallowance_amount = eallowance_Amount.getText().toString();
+                sallowance_type = allowance_Spinner.getSelectedItem().toString();
+                sremarks = emultiLineEditText.getText().toString();
+                progressDialog.show();
+                new backgroundworker2().execute();
             }
         });
 
@@ -137,21 +145,19 @@ public class Allawance_Claim extends AppCompatActivity {
                 finalBase64String.append("@@@");
             }
         }
-        String result = finalBase64String.toString();
-        Toast.makeText(this, "Base64 Result: " + result, Toast.LENGTH_SHORT).show();
+        sencoded_result = finalBase64String.toString();
     }
 
     public void intialise(){
-
         tfilename = findViewById(R.id.textView6);
-
         progressDialog = new ProgressDialog(Allawance_Claim.this);
         progressDialog.setMessage("Please Wait...!!!");
         progressDialog.setCanceledOnTouchOutside(false);
-
         sessionMaintance = new SessionMaintance(Allawance_Claim.this);
-
         allowance_Spinner = findViewById(R.id.spinner2);
+        eallowance_Amount = findViewById(R.id.editTextTextdob);
+        emultiLineEditText = findViewById(R.id.multiLineEditText);
+
     }
 
     public class backgroundworker extends AsyncTask<Void,Void,String> {
@@ -210,6 +216,69 @@ public class Allawance_Claim extends AppCompatActivity {
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(Allawance_Claim.this, android.R.layout.simple_spinner_item, allowanceList);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 allowance_Spinner.setAdapter(adapter);
+            }catch (Exception e){
+
+            }
+        }
+    }
+
+    public class backgroundworker2 extends AsyncTask<Void,Void,String> {
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            URL url= null;
+            try {
+                url = new URL(json_url2);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            try {
+                sb2=new StringBuffer();
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data = URLEncoder.encode("mobile","UTF-8")+"="+URLEncoder.encode(sessionMaintance.get_user_mail(),"UTF-8")+"&"
+                        +URLEncoder.encode("base64_encoded_data","UTF-8")+"="+ URLEncoder.encode(sencoded_result,"UTF-8")+"&"
+                        +URLEncoder.encode("allowance_type","UTF-8")+"="+ URLEncoder.encode(sallowance_type,"UTF-8")+"&"
+                        +URLEncoder.encode("allowance_amount","UTF-8")+"="+ URLEncoder.encode(sallowance_amount,"UTF-8")+"&"
+                        +URLEncoder.encode("remarks","UTF-8")+"="+ URLEncoder.encode(sremarks,"UTF-8");
+                bufferedWriter.write(post_data);
+                Log.d("PostData",""+post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+                InputStream inputStream=httpURLConnection.getInputStream();
+                BufferedReader bufferedReader =new BufferedReader(new InputStreamReader(inputStream));
+                while((json_string2=bufferedReader.readLine())!=null)
+                {
+                    sb2.append(json_string2+"\n");
+                    Log.d("json_string2",""+json_string2);
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                Log.d("GGG",""+sb2.toString());
+                return sb2.toString().trim();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            json_string2 = result;
+            progressDialog.dismiss();
+            try{
+                if(json_string2.equals("NO")){
+                    Toast.makeText(Allawance_Claim.this, "Contact Admin", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(Allawance_Claim.this, "Allowance Claimed", Toast.LENGTH_SHORT).show();
+                }
             }catch (Exception e){
 
             }
