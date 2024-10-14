@@ -40,4 +40,11 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+
+    implementation("com.google.android.play:app-update:2.1.0")
+
+    implementation("com.squareup.picasso:picasso:2.4.0")
+    implementation("jp.wasabeef:picasso-transformations:2.1.0")
 }
