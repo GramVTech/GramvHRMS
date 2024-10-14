@@ -54,6 +54,10 @@ public class main_menu extends AppCompatActivity {
     String json_url = Url_interface.url+"notification_leave_permission_wfh_count.php";
     String json_string="";
 
+    StringBuffer sb2 = new StringBuffer();
+    String json_url2 = Url_interface.url+"Check_WFH_Apply_Or_Not_And_In_or_Out_status.php";
+    String json_string2="";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -335,7 +339,73 @@ public class main_menu extends AppCompatActivity {
                 Txt_per_notf.setText(jsonObject1.getString("permission_count"));
                 Txt_all_notf.setText(jsonObject1.getString("allowance_count"));
                 Txt_wfh_notf.setText(jsonObject1.getString("wfh_count"));
+                progressDialog.show();
+                new backgroundworker2().execute();
+            }catch (Exception e){
 
+            }
+        }
+    }
+
+    public class backgroundworker2 extends AsyncTask<Void,Void,String> {
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            URL url= null;
+            try {
+                url = new URL(json_url2);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            try {
+                sb2=new StringBuffer();
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data = URLEncoder.encode("mobile","UTF-8")+"="+URLEncoder.encode(sessionMaintance.get_user_mail(),"UTF-8");
+                bufferedWriter.write(post_data);
+                Log.d("PostData",""+post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+                InputStream inputStream=httpURLConnection.getInputStream();
+                BufferedReader bufferedReader =new BufferedReader(new InputStreamReader(inputStream));
+                while((json_string2=bufferedReader.readLine())!=null)
+                {
+                    sb2.append(json_string2+"\n");
+                    Log.d("json_string2",""+json_string2);
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                Log.d("GGG",""+sb2.toString());
+                return sb2.toString().trim();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            json_string2 = result;
+            progressDialog.dismiss();
+            try{
+                if(json_string2.split("-")[0].equals("NO")){
+                    findViewById(R.id.imageView18).setVisibility(View.GONE);
+                }else{
+                    findViewById(R.id.imageView18).setVisibility(View.VISIBLE);
+                }
+
+                if(json_string2.split("-")[1].equals("NO")){
+                    findViewById(R.id.button2).setVisibility(View.GONE);
+                }else{
+                    findViewById(R.id.button2).setVisibility(View.VISIBLE);
+                }
             }catch (Exception e){
 
             }
