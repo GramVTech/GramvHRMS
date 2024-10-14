@@ -1,11 +1,16 @@
 package clinicleshrms.purplefish;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,10 +21,25 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class Allawance_Claim extends AppCompatActivity {
@@ -27,7 +47,16 @@ public class Allawance_Claim extends AppCompatActivity {
     private static final int IMAGE_CAPTURE_CODE = 101;
     private ArrayList<String> base64Images = new ArrayList<>();
     TextView tfilename;
+    ProgressDialog progressDialog;
+    SessionMaintance sessionMaintance;
 
+    StringBuffer sb = new StringBuffer();
+    String json_url = Url_interface.url+"Allowance/Allowance_list.php";
+    String json_string="";
+
+    List<String> allowanceList = new ArrayList<>();
+
+    Spinner allowance_Spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +93,9 @@ public class Allawance_Claim extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        progressDialog.show();
+        new backgroundworker().execute();
     }
 
     private void openCamera() {
@@ -110,6 +142,77 @@ public class Allawance_Claim extends AppCompatActivity {
     }
 
     public void intialise(){
+
         tfilename = findViewById(R.id.textView6);
+
+        progressDialog = new ProgressDialog(Allawance_Claim.this);
+        progressDialog.setMessage("Please Wait...!!!");
+        progressDialog.setCanceledOnTouchOutside(false);
+
+        sessionMaintance = new SessionMaintance(Allawance_Claim.this);
+
+        allowance_Spinner = findViewById(R.id.spinner2);
+    }
+
+    public class backgroundworker extends AsyncTask<Void,Void,String> {
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            URL url= null;
+            try {
+                url = new URL(json_url);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            try {
+                sb=new StringBuffer();
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data = URLEncoder.encode("mobile","UTF-8")+"="+URLEncoder.encode(sessionMaintance.get_user_mail(),"UTF-8");
+                bufferedWriter.write(post_data);
+                Log.d("PostData",""+post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+                InputStream inputStream=httpURLConnection.getInputStream();
+                BufferedReader bufferedReader =new BufferedReader(new InputStreamReader(inputStream));
+                while((json_string=bufferedReader.readLine())!=null)
+                {
+                    sb.append(json_string+"\n");
+                    Log.d("json_string",""+json_string);
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                Log.d("GGG",""+sb.toString());
+                return sb.toString().trim();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            json_string = result;
+            progressDialog.dismiss();
+            try{
+                JSONObject jsonObject = new JSONObject(json_string);
+                JSONArray allowanceArray = jsonObject.getJSONArray("allowance_type");
+                for (int i = 0; i < allowanceArray.length(); i++) {
+                    allowanceList.add(allowanceArray.getString(i));
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(Allawance_Claim.this, android.R.layout.simple_spinner_item, allowanceList);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                allowance_Spinner.setAdapter(adapter);
+            }catch (Exception e){
+
+            }
+        }
     }
 }
