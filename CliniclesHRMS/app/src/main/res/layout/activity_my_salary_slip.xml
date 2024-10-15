@@ -157,7 +157,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/kanit_light"
-                android:text="Actual Working Days"
+                android:text="Working Days"
                 android:textColor="@color/red"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider9" />
@@ -186,13 +186,14 @@
 
             <TextView
                 android:id="@+id/textView2z9"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:fontFamily="@font/kanit_light"
-                android:text="Consolidated Working Days"
+                android:gravity="left"
+                android:text="LOP"
                 android:textColor="@color/red"
                 app:layout_constraintEnd_toStartOf="@+id/divider5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -261,7 +262,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/kanit_light"
-                android:text="Expenses"
+                android:text="Allowance"
                 android:textColor="@color/red"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider12" />
