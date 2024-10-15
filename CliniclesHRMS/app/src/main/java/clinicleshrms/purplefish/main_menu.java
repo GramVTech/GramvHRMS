@@ -193,6 +193,7 @@ public class main_menu extends AppCompatActivity {
                     }
                     progressDialog.show();
                     getLoc();
+                    new backgroundworker3().execute();
                 }else if(check_in_out_button.getText().equals("CHECK OUT")) {
                     showInputDialog();
                 }
@@ -268,6 +269,7 @@ public class main_menu extends AppCompatActivity {
                         PackageManager.PERMISSION_GRANTED) {
             return;
         }else {
+            getLoc();
         }
     }
 
@@ -295,7 +297,6 @@ public class main_menu extends AppCompatActivity {
                         Log.e("EasyLocationProvider","onLocationUpdated:: "+ "Latitude: "+latitude+" Longitude: "+longitude);
                         Saddress = getCompleteAddressString(latitude,longitude);
                         slat_lon = String.valueOf(latitude)+","+String.valueOf(longitude);
-                        new backgroundworker3().execute();
                         easyLocationProvider.removeUpdates();
                         getLifecycle().removeObserver(easyLocationProvider);
 

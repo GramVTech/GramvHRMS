@@ -118,8 +118,9 @@ public class Allawance_Claim extends AppCompatActivity {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             String base64String = convertToBase64(photo);
             base64Images.add(base64String);
+
             String stemp_file_name = tfilename.getText().toString();
-            stemp_file_name = "Your Uploading Files : \n"+stemp_file_name+"\n";
+            stemp_file_name = stemp_file_name +"\n"+ generateTemporaryImageName()+"\n";
             tfilename.setText(stemp_file_name);
         }
     }
