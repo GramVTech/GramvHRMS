@@ -195,7 +195,7 @@ public class leave_history extends AppCompatActivity {
                 return view;
             }
 
-            view = getLayoutInflater().inflate(R.layout.custom_layout_allowance_history, null);
+            view = getLayoutInflater().inflate(R.layout.custom_layout_leave_history, null);
 
             ImageView allowance_image = view.findViewById(R.id.imageView6);
             ImageView allowance_reject_or_app = view.findViewById(R.id.imageView5);

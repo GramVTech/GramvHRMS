@@ -174,9 +174,9 @@ public class Permission_Request extends AppCompatActivity {
             progressDialog.dismiss();
             try{
                 if(json_string2.equals("NO")){
-                    Toast.makeText(leave_Request.this, "Contact Admin", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Permission_Request.this, "Contact Admin", Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(leave_Request.this, "Leave Request Submitted Successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Permission_Request.this, "Permission Request Submitted Successfully", Toast.LENGTH_SHORT).show();
                 }
             }catch (Exception e){
 

@@ -259,7 +259,7 @@ public class permission_approval extends AppCompatActivity {
                 return view;
             }
 
-            view = getLayoutInflater().inflate(R.layout.custom_layout_leave_approval, null);
+            view = getLayoutInflater().inflate(R.layout.custom_layout_permission_approval, null);
 
             ImageView allowance_image = view.findViewById(R.id.imageView9);
             ImageView allowance_approval = view.findViewById(R.id.imageView2);
