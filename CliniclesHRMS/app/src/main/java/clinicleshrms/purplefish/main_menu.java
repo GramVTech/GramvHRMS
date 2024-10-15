@@ -27,6 +27,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.Priority;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -176,7 +177,7 @@ public class main_menu extends AppCompatActivity {
         findViewById(R.id.imageView18).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                showInputDialog_wfh();
             }
         });
 
@@ -246,6 +247,39 @@ public class main_menu extends AppCompatActivity {
         builder.show();
     }
 
+    private void showInputDialog_wfh() {
+        final EditText input = new EditText(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Enter your Remarks");
+        builder.setView(input);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sremarks = input.getText().toString();
+                json_url3 = Url_interface.url+"WFH/WFH_Status_Update.php";
+                try {
+                    spost_data = URLEncoder.encode("mobile","UTF-8")+"="+URLEncoder.encode(sessionMaintance.get_user_mail(),"UTF-8")+"&"
+                            +URLEncoder.encode("location","UTF-8")+"="+ URLEncoder.encode(Saddress,"UTF-8")+"&"
+                            +URLEncoder.encode("lat_lon","UTF-8")+"="+ URLEncoder.encode(slat_lon,"UTF-8")+"&"
+                            +URLEncoder.encode("remarks","UTF-8")+"="+ URLEncoder.encode(sremarks,"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    throw new RuntimeException(e);
+                }
+                progressDialog.show();
+                new backgroundworker3().execute();
+                getLoc();
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
     public void intialise(){
 
         progressDialog = new ProgressDialog(main_menu.this);
@@ -286,7 +320,7 @@ public class main_menu extends AppCompatActivity {
 
     public void getLoc(){
         easyLocationProvider = new EasyLocationProvider.Builder(main_menu.this)
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
                 .setListener(new EasyLocationProvider.EasyLocationCallback() {
                     @Override
                     public void onGoogleAPIClient(GoogleApiClient googleApiClient, String message) {
@@ -299,7 +333,6 @@ public class main_menu extends AppCompatActivity {
                         slat_lon = String.valueOf(latitude)+","+String.valueOf(longitude);
                         easyLocationProvider.removeUpdates();
                         getLifecycle().removeObserver(easyLocationProvider);
-
                     }
 
                     @Override
