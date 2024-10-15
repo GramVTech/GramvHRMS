@@ -186,7 +186,7 @@ public class Profile extends AppCompatActivity {
             json_string3 = result;
             progressDialog.dismiss();
             try{
-                JSONObject jsonObject = new JSONObject(json_string);
+                JSONObject jsonObject = new JSONObject(json_string3);
                 JSONArray jsonArray = jsonObject.getJSONArray("products");
                 JSONObject jsonObject1 = jsonArray.getJSONObject(0);
                 //sreporting_person_id = jsonObject1.getString("reporting_person_id");

@@ -235,10 +235,11 @@ public class WFH_Request extends AppCompatActivity {
             json_string3 = result;
             progressDialog.dismiss();
             try{
-                JSONObject jsonObject = new JSONObject(json_string);
+                JSONObject jsonObject = new JSONObject(json_string3);
                 JSONArray jsonArray = jsonObject.getJSONArray("products");
                 JSONObject jsonObject1 = jsonArray.getJSONObject(0);
                 sreporting_person_id = jsonObject1.getString("reporting_person_id");
+                //Toast.makeText(WFH_Request.this, ""+jsonObject1.getString("reporting_person_name"), Toast.LENGTH_SHORT).show();
                 e_reporting_person.setText(jsonObject1.getString("reporting_person_name"));
             }catch (Exception e){
 
