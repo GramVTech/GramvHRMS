@@ -150,7 +150,11 @@ public class permission_approval extends AppCompatActivity {
                 }
                 if(LallowanceName.size()>0){
                     listView.setAdapter(customAdapter);
+                }else{
+                    Intent intent = new Intent(permission_approval.this, main_menu.class);
+                    startActivity(intent);
                 }
+
 
             }catch (Exception e){
 
@@ -219,8 +223,6 @@ public class permission_approval extends AppCompatActivity {
                     Lpermission_date.clear();
                     LallowanceRemarks.clear();
                     LallowancePhotos.clear();
-                    Intent intent = new Intent(permission_approval.this,main_menu.class);
-                    startActivity(intent);
                     Toast.makeText(permission_approval.this, "Permission Request Status Changed", Toast.LENGTH_SHORT).show();
                 }
             }catch (Exception e){

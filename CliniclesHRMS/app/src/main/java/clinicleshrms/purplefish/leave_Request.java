@@ -14,6 +14,7 @@ import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -130,42 +131,33 @@ public class leave_Request extends AppCompatActivity {
                     public void onDateSelected(String selectedDate) {
                         // Set the selected date in the EditText
                         e_from_date.setText(selectedDate);
+                        e_to_date.setText(e_from_date.getText().toString());
                     }
                 });
             }
         });
 
-        e_to_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDatePickerDialog(new DatePickerCallback() {
-                    @Override
-                    public void onDateSelected(String selectedDate) {
-                        // Set the selected date in the EditText
-                        e_to_date.setText(selectedDate);
-                    }
-                });
-            }
-        });
-
-        e_to_date.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                calc();
-            }
-        });
 
         cameraLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK) {
                 handleCapturedImage(imageUri);
+            }
+        });
+
+        sdaysBetween = "1";
+        tno_of_days.setText("No Of Days : "+sdaysBetween);
+
+        leave_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                if(selectedItem.equals("HALF PAID LEAVE")){
+                    sdaysBetween = "0.5";
+                    tno_of_days.setText("No Of Days : "+sdaysBetween);
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
@@ -298,21 +290,6 @@ public class leave_Request extends AppCompatActivity {
         }
     }
 
-    public void calc(){
-        DateTimeFormatter formatter = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        }
-        LocalDate date1 = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            date1 = LocalDate.parse(e_from_date.getText().toString(), formatter);
-            LocalDate date2 = LocalDate.parse(e_to_date.getText().toString(), formatter);
-            long daysBetween = ChronoUnit.DAYS.between(date1, date2);
-            sdaysBetween = String.valueOf(daysBetween);
-            tno_of_days.setText("No Of Days : "+sdaysBetween);
-        }
-
-    }
 
     private void showDatePickerDialog(DatePickerCallback callback) {
         int day = calendar.get(Calendar.DAY_OF_MONTH);

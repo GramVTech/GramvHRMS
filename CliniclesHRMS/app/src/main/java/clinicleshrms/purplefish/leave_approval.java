@@ -157,6 +157,9 @@ public class leave_approval extends AppCompatActivity {
                 }
                 if(LallowanceName.size()>0){
                     listView.setAdapter(customAdapter);
+                }else{
+                    Intent intent = new Intent(leave_approval.this, main_menu.class);
+                    startActivity(intent);
                 }
 
             }catch (Exception e){
@@ -229,8 +232,6 @@ public class leave_approval extends AppCompatActivity {
                     Lno_of_days.clear();
                     LallowanceRemarks.clear();
                     LallowancePhotos.clear();
-                    Intent intent = new Intent(leave_approval.this,main_menu.class);
-                    startActivity(intent);
                     Toast.makeText(leave_approval.this, "Leave Request Status Changed", Toast.LENGTH_SHORT).show();
                 }
             }catch (Exception e){
@@ -288,7 +289,7 @@ public class leave_approval extends AppCompatActivity {
 
             allowancer_name.setText(LallowanceName.get(i));
             allowancer_mobile.setText(LallowanceMobile.get(i));
-            allowancer_type.setText("Type : "+LallowanceType.get(i));
+            allowancer_type.setText(LallowanceType.get(i));
             tfrom_date.setText(Lfrom_date.get(i));
             tto_date.setText(Lto_date.get(i));
             tdays.setText(Lno_of_days.get(i)+" Days");

@@ -150,6 +150,9 @@ public class wfh_approval extends AppCompatActivity {
                 }
                 if(LallowanceName.size()>0){
                     listView.setAdapter(customAdapter);
+                }else{
+                    Intent intent = new Intent(wfh_approval.this, main_menu.class);
+                    startActivity(intent);
                 }
 
             }catch (Exception e){
@@ -221,8 +224,6 @@ public class wfh_approval extends AppCompatActivity {
                     Lno_of_days.clear();
                     LallowanceRemarks.clear();
                     Toast.makeText(wfh_approval.this, "WFH Request Status Changed", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(wfh_approval.this,main_menu.class);
-                    startActivity(intent);
                 }
             }catch (Exception e){
 

@@ -316,6 +316,10 @@ public class Permission_Request extends AppCompatActivity {
             try{
                 sno_of_permission = json_string;
                 e_no_of_permission.setText(sno_of_permission);
+                if(sno_of_permission.equals("0")){
+                    findViewById(R.id.button3).setVisibility(View.GONE);
+                    Toast.makeText(Permission_Request.this, "You Cannot Apply Permission", Toast.LENGTH_SHORT).show();
+                }
                 progressDialog.show();
                 new backgroundworker3().execute();
             }catch (Exception e){

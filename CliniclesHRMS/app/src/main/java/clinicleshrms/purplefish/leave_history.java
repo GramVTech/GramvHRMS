@@ -212,7 +212,7 @@ public class leave_history extends AppCompatActivity {
 
             allowancer_name.setText(LallowanceName.get(i));
             allowancer_mobile.setText(LallowanceMobile.get(i));
-            allowancer_type.setText("Type : "+LallowanceType.get(i));
+            allowancer_type.setText(LallowanceType.get(i));
             tfrom_date.setText(Lfrom_date.get(i));
             tto_date.setText(Lto_date.get(i));
             tdays.setText(Lno_of_days.get(i)+" Days");
