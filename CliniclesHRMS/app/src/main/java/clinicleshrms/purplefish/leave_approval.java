@@ -2,6 +2,7 @@ package clinicleshrms.purplefish;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -227,6 +228,8 @@ public class leave_approval extends AppCompatActivity {
                     Lno_of_days.clear();
                     LallowanceRemarks.clear();
                     LallowancePhotos.clear();
+                    Intent intent = new Intent(leave_approval.this,main_menu.class);
+                    startActivity(intent);
                     Toast.makeText(leave_approval.this, "Leave Request Status Changed", Toast.LENGTH_SHORT).show();
                 }
             }catch (Exception e){

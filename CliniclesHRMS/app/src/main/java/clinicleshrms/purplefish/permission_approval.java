@@ -2,6 +2,7 @@ package clinicleshrms.purplefish;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -217,6 +218,8 @@ public class permission_approval extends AppCompatActivity {
                     Lpermission_date.clear();
                     LallowanceRemarks.clear();
                     LallowancePhotos.clear();
+                    Intent intent = new Intent(permission_approval.this,main_menu.class);
+                    startActivity(intent);
                     Toast.makeText(permission_approval.this, "Permission Request Status Changed", Toast.LENGTH_SHORT).show();
                 }
             }catch (Exception e){

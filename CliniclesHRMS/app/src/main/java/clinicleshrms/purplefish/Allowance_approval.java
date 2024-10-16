@@ -2,6 +2,7 @@ package clinicleshrms.purplefish;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -228,6 +229,8 @@ public class Allowance_approval extends AppCompatActivity {
                     LallowanceRupees.clear();
                     LallowanceRemarks.clear();
                     LallowancePhotos.clear();
+                    Intent intent = new Intent(Allowance_approval.this,main_menu.class);
+                    startActivity(intent);
                     Toast.makeText(Allowance_approval.this, "Allowance Status Changed", Toast.LENGTH_SHORT).show();
                 }
             }catch (Exception e){
