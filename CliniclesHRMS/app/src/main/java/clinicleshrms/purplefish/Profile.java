@@ -128,7 +128,7 @@ public class Profile extends AppCompatActivity {
                 tdepartment.setText(jsonObject1.getString("department_name"));
                 trole.setText(jsonObject1.getString("role_name"));
                 tshift.setText(jsonObject1.getString("shift"));
-                tavail_leaves.setText(jsonObject1.getString("leave_count")+" "+jsonObject1.getString("permission_count"));
+                tavail_leaves.setText(jsonObject1.getString("leave_count")+" / "+jsonObject1.getString("permission_count"));
                 tmobile.setText(sessionMaintance.get_user_mail());
                 progressDialog.show();
                 new backgroundworker3().execute();
