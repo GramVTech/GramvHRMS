@@ -135,7 +135,7 @@ public class wfh_approval extends AppCompatActivity {
             try{
                 JSONObject jsonObject = new JSONObject(json_string);
                 JSONArray jsonArray = jsonObject.getJSONArray("products");
-                while(count<LallowanceName.size()){
+                while(count<jsonArray.length()){
                     JSONObject jsonObject1 = jsonArray.getJSONObject(count);
                     LallowanceName.add(jsonObject1.getString("applier_name"));
                     LallowanceId.add(jsonObject1.getString("id"));
@@ -313,6 +313,7 @@ public class wfh_approval extends AppCompatActivity {
         progressDialog.setCanceledOnTouchOutside(false);
         sessionMaintance = new SessionMaintance(wfh_approval.this);
         listView = findViewById(R.id.listView);
+        listView.setDivider(null);
         customAdapter = new CustomAdapter();
 
     }

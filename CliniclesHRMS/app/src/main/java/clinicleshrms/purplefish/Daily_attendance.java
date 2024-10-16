@@ -159,7 +159,7 @@ public class Daily_attendance extends AppCompatActivity {
             try{
                 JSONObject jsonObject = new JSONObject(json_string);
                 JSONArray jsonArray = jsonObject.getJSONArray("products");
-                while(count<LId.size()){
+                while(count<jsonArray.length()){
                     JSONObject jsonObject1 = jsonArray.getJSONObject(count);
                     Ldate.add(jsonObject1.getString("date"));
                     Lerr_msg.add(jsonObject1.getString("err_msg"));
@@ -323,6 +323,7 @@ public class Daily_attendance extends AppCompatActivity {
         progressDialog.setCanceledOnTouchOutside(false);
         sessionMaintance = new SessionMaintance(Daily_attendance.this);
         listView = findViewById(R.id.listView);
+        listView.setDivider(null);
         customAdapter = new CustomAdapter();
         tdate = findViewById(R.id.textView24);
     }

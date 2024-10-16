@@ -195,7 +195,7 @@ public class Daily_attendance_View extends AppCompatActivity {
                 int count = 0;
                 JSONObject jsonObject = new JSONObject(json_string);
                 JSONArray jsonArray = jsonObject.getJSONArray("products");
-                while(count<Ldateee.size()){
+                while(count<jsonArray.length()){
                     JSONObject jsonObject1 = jsonArray.getJSONObject(count);
                     Ldateee.add(jsonObject1.getString("date"));
                     Lwork_type.add(jsonObject1.getString("working_type"));
@@ -261,7 +261,7 @@ public class Daily_attendance_View extends AppCompatActivity {
 
         month_spinner = findViewById(R.id.spinner);
         listView = findViewById(R.id.listView);
-
+        listView.setDivider(null);
         sessionMaintance = new SessionMaintance(Daily_attendance_View.this);
 
     }

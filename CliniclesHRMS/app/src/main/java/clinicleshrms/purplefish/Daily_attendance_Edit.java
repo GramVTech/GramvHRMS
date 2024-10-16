@@ -36,9 +36,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class Daily_attendance_Edit extends AppCompatActivity {
 
@@ -56,6 +58,7 @@ public class Daily_attendance_Edit extends AppCompatActivity {
     TextView tname,tmobile;
     Spinner leave_type_spinner;
     String sid="",sleave_type="";
+    private Calendar calendar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +72,13 @@ public class Daily_attendance_Edit extends AppCompatActivity {
         edate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                edate.setText(showDatePicker());
+                showDatePickerDialog(new DatePickerCallback() {
+                    @Override
+                    public void onDateSelected(String selectedDate) {
+                        // Set the selected date in the EditText
+                        edate.setText(selectedDate);
+                    }
+                });
             }
         });
 
@@ -237,21 +246,29 @@ public class Daily_attendance_Edit extends AppCompatActivity {
         }
     }
 
-    public String showDatePicker() {
-        final Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
+    private void showDatePickerDialog(DatePickerCallback callback) {
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
         int month = calendar.get(Calendar.MONTH);
-        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-        final String[] selectedDate = {""};
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+        int year = calendar.get(Calendar.YEAR);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                Daily_attendance_Edit.this,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        selectedDate[0] = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, monthOfYear);
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+                        String selectedDate = dateFormat.format(calendar.getTime());
+                        callback.onDateSelected(selectedDate);
                     }
-                }, year, month, dayOfMonth);
+                },
+                year, month, day);
         datePickerDialog.show();
-        return selectedDate[0].toString();
+    }
+
+    interface DatePickerCallback {
+        void onDateSelected(String selectedDate);
     }
 
     public void intialise(){
@@ -262,6 +279,7 @@ public class Daily_attendance_Edit extends AppCompatActivity {
         tmobile = findViewById(R.id.textView18);
         leave_type_spinner = findViewById(R.id.textView31);
 
+        calendar = Calendar.getInstance();
 
         progressDialog = new ProgressDialog(Daily_attendance_Edit.this);
         progressDialog.setMessage("Please Wait...!!!");

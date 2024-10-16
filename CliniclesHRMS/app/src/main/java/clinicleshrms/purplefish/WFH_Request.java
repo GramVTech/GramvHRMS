@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -34,31 +36,31 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class WFH_Request extends AppCompatActivity {
 
 
     ProgressDialog progressDialog;
     SessionMaintance sessionMaintance;
-    StringBuffer sb = new StringBuffer();
-    String json_url = Url_interface.url+"WFH/WFH_Request.php";
-    String json_string="";
     EditText e_from_date,e_multiLineEditText,e_to_date,e_reporting_person;
     String sfrom_date="",sto_date="",sremarks="",sreporting_person_id="";
     StringBuffer sb2 = new StringBuffer();
-    String json_url2 = Url_interface.url+"WFH/Leave_Request.php";
+    String json_url2 = Url_interface.url+"WFH/WFH_Request.php";
     String json_string2="";
     TextView tno_of_days;
     String sdaysBetween = "";
     StringBuffer sb3 = new StringBuffer();
     String json_url3 = Url_interface.url+"Reporting_Person.php";
     String json_string3="";
+    private Calendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,14 +96,40 @@ public class WFH_Request extends AppCompatActivity {
         e_from_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                e_from_date.setText(showDatePicker());
+                showDatePickerDialog(new DatePickerCallback() {
+                    @Override
+                    public void onDateSelected(String selectedDate) {
+                        // Set the selected date in the EditText
+                        e_from_date.setText(selectedDate);
+                    }
+                });
             }
         });
 
         e_to_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                e_to_date.setText(showDatePicker());
+                showDatePickerDialog(new DatePickerCallback() {
+                    @Override
+                    public void onDateSelected(String selectedDate) {
+                        // Set the selected date in the EditText
+                        e_to_date.setText(selectedDate);
+                    }
+                });
+            }
+        });
+
+        e_to_date.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
                 calc();
             }
         });
@@ -120,7 +148,7 @@ public class WFH_Request extends AppCompatActivity {
         e_multiLineEditText =findViewById(R.id.multiLineEditText);
         e_reporting_person = findViewById(R.id.editTextText);
         tno_of_days = findViewById(R.id.textView14);
-
+        calendar = Calendar.getInstance();
     }
 
     public class backgroundworker2 extends AsyncTask<Void,Void,String> {
@@ -263,21 +291,29 @@ public class WFH_Request extends AppCompatActivity {
 
     }
 
-    public String showDatePicker() {
-        final Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
+    private void showDatePickerDialog(DatePickerCallback callback) {
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
         int month = calendar.get(Calendar.MONTH);
-        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-        final String[] selectedDate = {""};
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+        int year = calendar.get(Calendar.YEAR);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                WFH_Request.this,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        selectedDate[0] = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, monthOfYear);
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+                        String selectedDate = dateFormat.format(calendar.getTime());
+                        callback.onDateSelected(selectedDate);
                     }
-                }, year, month, dayOfMonth);
+                },
+                year, month, day);
         datePickerDialog.show();
-        return selectedDate[0];
+    }
+
+    interface DatePickerCallback {
+        void onDateSelected(String selectedDate);
     }
 
 }

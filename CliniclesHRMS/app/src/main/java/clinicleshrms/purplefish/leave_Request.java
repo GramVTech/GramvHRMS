@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -70,6 +72,7 @@ public class leave_Request extends AppCompatActivity {
     StringBuffer sb3 = new StringBuffer();
     String json_url3 = Url_interface.url+"Reporting_Person.php";
     String json_string3="";
+    private Calendar calendar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,14 +117,40 @@ public class leave_Request extends AppCompatActivity {
         e_from_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                e_from_date.setText(showDatePicker());
+                showDatePickerDialog(new DatePickerCallback() {
+                    @Override
+                    public void onDateSelected(String selectedDate) {
+                        // Set the selected date in the EditText
+                        e_from_date.setText(selectedDate);
+                    }
+                });
             }
         });
 
         e_to_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                e_to_date.setText(showDatePicker());
+                showDatePickerDialog(new DatePickerCallback() {
+                    @Override
+                    public void onDateSelected(String selectedDate) {
+                        // Set the selected date in the EditText
+                        e_to_date.setText(selectedDate);
+                    }
+                });
+            }
+        });
+
+        e_to_date.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
                 calc();
             }
         });
@@ -271,21 +300,29 @@ public class leave_Request extends AppCompatActivity {
 
     }
 
-    public String showDatePicker() {
-        final Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
+    private void showDatePickerDialog(DatePickerCallback callback) {
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
         int month = calendar.get(Calendar.MONTH);
-        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-        final String[] selectedDate = {""};
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+        int year = calendar.get(Calendar.YEAR);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                leave_Request.this,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        selectedDate[0] = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, monthOfYear);
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+                        String selectedDate = dateFormat.format(calendar.getTime());
+                        callback.onDateSelected(selectedDate);
                     }
-                }, year, month, dayOfMonth);
+                },
+                year, month, day);
         datePickerDialog.show();
-        return selectedDate[0].toString();
+    }
+
+    interface DatePickerCallback {
+        void onDateSelected(String selectedDate);
     }
 
     public class backgroundworker extends AsyncTask<Void,Void,String> {
@@ -407,6 +444,7 @@ public class leave_Request extends AppCompatActivity {
         leave_Spinner = findViewById(R.id.spinner);
         e_reporting_person = findViewById(R.id.editTextText);
         tno_of_days = findViewById(R.id.textView14);
+        calendar = Calendar.getInstance();
 
     }
 }

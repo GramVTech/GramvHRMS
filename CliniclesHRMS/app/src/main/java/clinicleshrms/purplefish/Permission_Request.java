@@ -67,6 +67,7 @@ public class Permission_Request extends AppCompatActivity {
     StringBuffer sb3 = new StringBuffer();
     String json_url3 = Url_interface.url+"Reporting_Person.php";
     String json_string3="";
+    private Calendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +114,13 @@ public class Permission_Request extends AppCompatActivity {
         e_from_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                e_from_date.setText(showDatePicker());
+                showDatePickerDialog(new DatePickerCallback() {
+                    @Override
+                    public void onDateSelected(String selectedDate) {
+                        // Set the selected date in the EditText
+                        e_from_date.setText(selectedDate);
+                    }
+                });
             }
         });
 
@@ -243,23 +250,6 @@ public class Permission_Request extends AppCompatActivity {
         }
     }
 
-    public String showDatePicker() {
-        final Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-        final String[] selectedDate = {""};
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        selectedDate[0] = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
-                    }
-                }, year, month, dayOfMonth);
-        datePickerDialog.show();
-        return selectedDate[0];
-    }
-
     public class backgroundworker extends AsyncTask<Void,Void,String> {
 
         @Override
@@ -371,6 +361,31 @@ public class Permission_Request extends AppCompatActivity {
         e_multiLineEditText =findViewById(R.id.multiLineEditText);
         e_reporting_person = findViewById(R.id.editTextText);
         e_no_of_permission = findViewById(R.id.editTextTextdob2);
+        calendar = Calendar.getInstance();
+    }
 
+    private void showDatePickerDialog(DatePickerCallback callback) {
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                Permission_Request.this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, monthOfYear);
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+                        String selectedDate = dateFormat.format(calendar.getTime());
+                        callback.onDateSelected(selectedDate);
+                    }
+                },
+                year, month, day);
+        datePickerDialog.show();
+    }
+
+    interface DatePickerCallback {
+        void onDateSelected(String selectedDate);
     }
 }

@@ -136,7 +136,7 @@ public class leave_history extends AppCompatActivity {
             try{
                 JSONObject jsonObject = new JSONObject(json_string);
                 JSONArray jsonArray = jsonObject.getJSONArray("products");
-                while(count<LallowanceName.size()){
+                while(count<jsonArray.length()){
                     JSONObject jsonObject1 = jsonArray.getJSONObject(count);
                     LallowanceName.add(jsonObject1.getString("applier_name"));
                     LallowanceId.add(jsonObject1.getString("id"));
@@ -215,11 +215,14 @@ public class leave_history extends AppCompatActivity {
             tdays.setText(Lno_of_days.get(i)+" Days");
             allowancer_remarks.setText(LallowanceRemarks.get(i));
 
-            if(Lallowance_status.get(i).equals("1")){
-                allowance_reject_or_app.setBackgroundResource(R.mipmap.accept);
+            if(Lallowance_status.get(i).equals("0")){
+                allowance_reject_or_app.setImageResource(R.mipmap.clock);
+            } else if(Lallowance_status.get(i).equals("1")){
+                allowance_reject_or_app.setImageResource(R.mipmap.accept);
             }else{
-                allowance_reject_or_app.setBackgroundResource(R.mipmap.reject);
+                allowance_reject_or_app.setImageResource(R.mipmap.reject);
             }
+
 
             allowance_image.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -274,6 +277,7 @@ public class leave_history extends AppCompatActivity {
         progressDialog.setCanceledOnTouchOutside(false);
         sessionMaintance = new SessionMaintance(leave_history.this);
         listView = findViewById(R.id.listView);
+        listView.setDivider(null);
         customAdapter = new CustomAdapter();
 
     }
