@@ -2,12 +2,17 @@ package clinicleshrms.purplefish;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Point;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -16,8 +21,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -28,6 +36,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -45,7 +54,7 @@ import java.util.Locale;
 
 public class Allawance_Claim extends AppCompatActivity {
 
-    private static final int IMAGE_CAPTURE_CODE = 101;
+    private Uri imageUri;
     private ArrayList<String> base64Images = new ArrayList<>();
     TextView tfilename;
     ProgressDialog progressDialog;
@@ -60,6 +69,7 @@ public class Allawance_Claim extends AppCompatActivity {
     StringBuffer sb2 = new StringBuffer();
     String json_url2 = Url_interface.url+"Allowance/Allowance_Request.php";
     String json_string2="";
+    private ActivityResultLauncher<Intent> cameraLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,33 +114,60 @@ public class Allawance_Claim extends AppCompatActivity {
 
         progressDialog.show();
         new backgroundworker().execute();
+
+        cameraLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == RESULT_OK) {
+                handleCapturedImage(imageUri);
+            }
+        });
     }
 
     private void openCamera() {
+        File photoFile = new File(getExternalFilesDir(null), generateFileName());
+        imageUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".fileprovider", photoFile);
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri); // Specify the output URI
+        cameraLauncher.launch(cameraIntent);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == IMAGE_CAPTURE_CODE && resultCode == RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            String base64String = convertToBase64(photo);
-            base64Images.add(base64String);
+    private String generateFileName() {
+        return "IMG_" + System.currentTimeMillis() + ".jpg";
+    }
 
-            String stemp_file_name = tfilename.getText().toString();
-            stemp_file_name = stemp_file_name +"\n"+ generateTemporaryImageName()+"\n";
-            tfilename.setText(stemp_file_name);
+    private void handleCapturedImage(Uri imageUri) {
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(imageUri);
+            Bitmap fullsize = BitmapFactory.decodeStream(inputStream);
+
+            if (fullsize != null) {
+                Bitmap resizedBitmap = resizeBitmap(fullsize, 800, 800);
+                String base64String = convertToBase64(resizedBitmap, 50);
+                base64Images.add(base64String);
+                String stemp_file_name = tfilename.getText().toString();
+                stemp_file_name += "\n" + generateTemporaryImageName() + "\n";
+                tfilename.setText(stemp_file_name);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    private String convertToBase64(Bitmap bitmap) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-        byte[] imageBytes = outputStream.toByteArray();
-        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+    private Bitmap resizeBitmap(Bitmap bitmap, int maxWidth, int maxHeight) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        float scale = Math.min((float) maxWidth / width, (float) maxHeight / height);
+        int newWidth = Math.round(scale * width);
+        int newHeight = Math.round(scale * height);
+        return Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
     }
+
+    private String convertToBase64(Bitmap bitmap, int quality) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
 
     private String generateTemporaryImageName() {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());

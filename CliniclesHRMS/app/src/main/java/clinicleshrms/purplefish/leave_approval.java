@@ -3,6 +3,7 @@ package clinicleshrms.purplefish;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -331,14 +332,25 @@ public class leave_approval extends AppCompatActivity {
         if (currentIndex < urlArray.length) {
             ImageView imageView = new ImageView(leave_approval.this);
             imageView.setAdjustViewBounds(true);
-            Picasso.get().load(urlArray[currentIndex]).into(imageView);
+            Picasso.get().load(Url_interface.url+"Leave/"+urlArray[currentIndex]).into(imageView);
             AlertDialog.Builder builder = new AlertDialog.Builder(leave_approval.this);
             builder.setView(imageView);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Url_interface.url+"Leave/"+urlArray[currentIndex]));
+                    Toast.makeText(leave_approval.this, "", Toast.LENGTH_SHORT).show();
+                    startActivity(browserIntent);
+
+                }
+            });
             builder.setPositiveButton("Next", (dialog, which) -> {
                 currentIndex++;
                 dialog.dismiss();
                 if (currentIndex < urlArray.length) {
                     showImagesOneByOne();
+                }else{
+                    currentIndex = 0;
                 }
             });
 
@@ -347,11 +359,14 @@ public class leave_approval extends AppCompatActivity {
                 dialog.dismiss();
                 if (currentIndex >= 0 && currentIndex < urlArray.length) {
                     showImagesOneByOne();
+                }else{
+                    currentIndex = 0;
                 }
             });
 
             builder.setNeutralButton("Ok", (dialog, which) -> {
                 dialog.dismiss();
+                currentIndex = 0;
             });
 
             AlertDialog dialog = builder.create();

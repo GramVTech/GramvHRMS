@@ -145,8 +145,13 @@ public class main_menu extends AppCompatActivity {
         findViewById(R.id.allowance).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(main_menu.this, Allowance_approval.class);
-                startActivity(intent);
+                if(Txt_all_notf.getText().toString().equals("0")){
+                    Toast.makeText(main_menu.this, "Allowance Approval Done Only By Admin", Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent intent = new Intent(main_menu.this, Allowance_approval.class);
+                    startActivity(intent);
+                }
+
             }
         });
 

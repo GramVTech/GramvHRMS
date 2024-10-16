@@ -3,6 +3,7 @@ package clinicleshrms.purplefish;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -157,6 +158,9 @@ public class Allowance_approval extends AppCompatActivity {
                 }
                 if(LallowanceName.size()>0){
                     listView.setAdapter(customAdapter);
+                }else{
+                    Intent intent = new Intent(Allowance_approval.this, main_menu.class);
+                    startActivity(intent);
                 }
 
             }catch (Exception e){
@@ -229,8 +233,6 @@ public class Allowance_approval extends AppCompatActivity {
                     LallowanceRupees.clear();
                     LallowanceRemarks.clear();
                     LallowancePhotos.clear();
-                    Intent intent = new Intent(Allowance_approval.this,main_menu.class);
-                    startActivity(intent);
                     Toast.makeText(Allowance_approval.this, "Allowance Status Changed", Toast.LENGTH_SHORT).show();
                 }
             }catch (Exception e){
@@ -332,14 +334,25 @@ public class Allowance_approval extends AppCompatActivity {
         if (currentIndex < urlArray.length) {
             ImageView imageView = new ImageView(Allowance_approval.this);
             imageView.setAdjustViewBounds(true);
-            Picasso.get().load(urlArray[currentIndex]).into(imageView);
+            Picasso.get().load(Url_interface.url+"Allowance/"+urlArray[currentIndex]).into(imageView);
             AlertDialog.Builder builder = new AlertDialog.Builder(Allowance_approval.this);
             builder.setView(imageView);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Url_interface.url+"Allowance/"+urlArray[currentIndex]));
+                    Toast.makeText(Allowance_approval.this, "", Toast.LENGTH_SHORT).show();
+                    startActivity(browserIntent);
+
+                }
+            });
             builder.setPositiveButton("Next", (dialog, which) -> {
                 currentIndex++;
                 dialog.dismiss();
                 if (currentIndex < urlArray.length) {
                     showImagesOneByOne();
+                }else{
+                    currentIndex = 0;
                 }
             });
 
@@ -348,11 +361,14 @@ public class Allowance_approval extends AppCompatActivity {
                 dialog.dismiss();
                 if (currentIndex >= 0 && currentIndex < urlArray.length) {
                     showImagesOneByOne();
+                }else{
+                    currentIndex = 0;
                 }
             });
 
             builder.setNeutralButton("Ok", (dialog, which) -> {
                 dialog.dismiss();
+                currentIndex = 0;
             });
 
             AlertDialog dialog = builder.create();

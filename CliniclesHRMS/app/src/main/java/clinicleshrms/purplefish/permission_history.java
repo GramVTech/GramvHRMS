@@ -2,6 +2,8 @@ package clinicleshrms.purplefish;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -227,14 +230,25 @@ public class permission_history extends AppCompatActivity {
         if (currentIndex < urlArray.length) {
             ImageView imageView = new ImageView(permission_history.this);
             imageView.setAdjustViewBounds(true);
-            Picasso.get().load(urlArray[currentIndex]).into(imageView);
+            Picasso.get().load(Url_interface.url+"Permission/"+urlArray[currentIndex]).into(imageView);
             AlertDialog.Builder builder = new AlertDialog.Builder(permission_history.this);
             builder.setView(imageView);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Url_interface.url+"Permission/"+urlArray[currentIndex]));
+                    Toast.makeText(permission_history.this, "", Toast.LENGTH_SHORT).show();
+                    startActivity(browserIntent);
+
+                }
+            });
             builder.setPositiveButton("Next", (dialog, which) -> {
                 currentIndex++;
                 dialog.dismiss();
                 if (currentIndex < urlArray.length) {
                     showImagesOneByOne();
+                }else{
+                    currentIndex = 0;
                 }
             });
 
@@ -243,11 +257,14 @@ public class permission_history extends AppCompatActivity {
                 dialog.dismiss();
                 if (currentIndex >= 0 && currentIndex < urlArray.length) {
                     showImagesOneByOne();
+                }else{
+                    currentIndex = 0;
                 }
             });
 
             builder.setNeutralButton("Ok", (dialog, which) -> {
                 dialog.dismiss();
+                currentIndex = 0;
             });
 
             AlertDialog dialog = builder.create();
