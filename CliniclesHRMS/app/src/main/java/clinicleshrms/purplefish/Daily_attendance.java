@@ -90,16 +90,17 @@ public class Daily_attendance extends AppCompatActivity {
         findViewById(R.id.button6).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                View listItem;
                 for (int i = 0; i < listView.getChildCount(); i++) {
-                    View listItem = listView.getChildAt(i);
+                    listItem = listView.getAdapter().getView(i, null, null);
                     String temp = "";
-                    TextView textView = listItem.findViewById(R.id.textView31);
+                    TextView textView = listItem.findViewById(R.id.textView35);
                     Spinner leave_t_spin = listItem.findViewById(R.id.textView31);
                     temp = Ldate.get(0)+"@"+textView.getText().toString()+"@"+Lreporting_id.get(0)+"@"+leave_t_spin.getSelectedItem().toString();
                     master_string = master_string + temp + "@@@";
-                    progressDialog.show();
-                    new backgroundworker3().execute();
                 }
+                progressDialog.show();
+                new backgroundworker3().execute();
             }
         });
 
@@ -172,7 +173,11 @@ public class Daily_attendance extends AppCompatActivity {
                     count++;
                 }
                 if(LId.size()>0){
+                    tdate.setText("ATTENDANCE DATE : "+Ldate.get(0));
                     listView.setAdapter(customAdapter);
+                }else{
+                    tdate.setText("No Attendance Pending");
+
                 }
 
             }catch (Exception e){
@@ -223,6 +228,8 @@ public class Daily_attendance extends AppCompatActivity {
             TextView allowancer_id = view.findViewById(R.id.textView35);
             Spinner leave_type_spinner = view.findViewById(R.id.textView31);
 
+            allowancer_id.setVisibility(View.INVISIBLE);
+
             allowancer_name.setText(Lname.get(i));
             allowancer_mobile.setText(Lmobile.get(i));
             allowancer_id.setText(LId.get(i));
@@ -271,6 +278,7 @@ public class Daily_attendance extends AppCompatActivity {
                 httpURLConnection.setDoInput(true);
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                Log.e("ASASAS",""+master_string);
                 String post_data = URLEncoder.encode("total_attendance","UTF-8")+"="+URLEncoder.encode(master_string.substring(0,master_string.length()-3),"UTF-8");
                 bufferedWriter.write(post_data);
                 Log.d("PostData",""+post_data);
@@ -282,7 +290,7 @@ public class Daily_attendance extends AppCompatActivity {
                 while((json_string3=bufferedReader.readLine())!=null)
                 {
                     sb3.append(json_string3+"\n");
-                    Log.d("json_string2",""+json_string3);
+                    Log.d("json_string3",""+json_string3);
                 }
 
                 bufferedReader.close();
@@ -311,9 +319,8 @@ public class Daily_attendance extends AppCompatActivity {
             Lcheck_status.clear();
             master_string = "";
 
-            progressDialog.show();
-            new backgroundworker3().execute();
-
+            Intent intent = new Intent(Daily_attendance.this, main_menu.class);
+            startActivity(intent);
         }
     }
 
