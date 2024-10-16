@@ -239,6 +239,7 @@ public class main_menu extends AppCompatActivity {
                     throw new RuntimeException(e);
                 }
                 progressDialog.show();
+                new backgroundworker3().execute();
                 getLoc();
 
             }
@@ -559,8 +560,14 @@ public class main_menu extends AppCompatActivity {
                 if(json_string3.equals("NO")){
                     Toast.makeText(main_menu.this, "Contact Admin", Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(main_menu.this, "Check in Happended", Toast.LENGTH_SHORT).show();
-                    check_in_out_button.setText("CHECK OUT");
+                    if(check_in_out_button.getText().toString().equals("CHECK IN")) {
+                        Toast.makeText(main_menu.this, "Check in Happended", Toast.LENGTH_SHORT).show();
+                        check_in_out_button.setText("CHECK OUT");
+                    }else{
+                        Toast.makeText(main_menu.this, "Check out Happended", Toast.LENGTH_SHORT).show();
+                        progressDialog.show();
+                        new backgroundworker2().execute();
+                    }
                 }
             }catch (Exception e){
 
