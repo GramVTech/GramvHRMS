@@ -285,7 +285,7 @@ public class leave_Request extends AppCompatActivity {
                     }
                 }, year, month, dayOfMonth);
         datePickerDialog.show();
-        return selectedDate[0];
+        return selectedDate[0].toString();
     }
 
     public class backgroundworker extends AsyncTask<Void,Void,String> {

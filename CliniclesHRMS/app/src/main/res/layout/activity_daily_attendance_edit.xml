@@ -182,7 +182,7 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:fontFamily="@font/kanit_light"
-        android:hint="From Date"
+        android:hint="Date to Modify"
         android:imeOptions="actionNext"
         android:inputType="text"
         android:paddingLeft="16sp"

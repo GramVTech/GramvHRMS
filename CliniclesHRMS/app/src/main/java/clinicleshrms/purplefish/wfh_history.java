@@ -217,7 +217,6 @@ public class wfh_history extends AppCompatActivity {
 
     }
 
-
     public void intialise(){
         progressDialog = new ProgressDialog(wfh_history.this);
         progressDialog.setMessage("Please Wait...!!!");
