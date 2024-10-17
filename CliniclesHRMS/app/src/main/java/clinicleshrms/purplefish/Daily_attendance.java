@@ -467,6 +467,8 @@ public class Daily_attendance extends AppCompatActivity {
                                 stdate
                         );
                         bottomSheet.show(getSupportFragmentManager(), "CustomBottomSheet");
+                    }else{
+                        Toast.makeText(Daily_attendance.this, "No Remarks Found", Toast.LENGTH_SHORT).show();
                     }
 
                 }
