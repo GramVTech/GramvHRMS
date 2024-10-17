@@ -561,12 +561,14 @@ public class main_menu extends AppCompatActivity {
                     Toast.makeText(main_menu.this, "Contact Admin", Toast.LENGTH_SHORT).show();
                 }else{
                     if(check_in_out_button.getText().toString().equals("CHECK IN")) {
-                        Toast.makeText(main_menu.this, "Check in Happended", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(main_menu.this, "Status Changed", Toast.LENGTH_SHORT).show();
                         check_in_out_button.setText("CHECK OUT");
-                    }else{
-                        Toast.makeText(main_menu.this, "Check out Happended", Toast.LENGTH_SHORT).show();
+                    }else if(check_in_out_button.getText().toString().equals("CHECK OUT")){
+                        Toast.makeText(main_menu.this, "Status Changed", Toast.LENGTH_SHORT).show();
                         progressDialog.show();
                         new backgroundworker2().execute();
+                    }else{
+                        Toast.makeText(main_menu.this, "Status Changed", Toast.LENGTH_SHORT).show();
                     }
                 }
             }catch (Exception e){
