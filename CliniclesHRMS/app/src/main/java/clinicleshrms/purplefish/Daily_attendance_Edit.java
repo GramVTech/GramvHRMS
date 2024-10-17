@@ -69,6 +69,12 @@ public class Daily_attendance_Edit extends AppCompatActivity {
             return insets;
         });
 
+        intialise();
+
+        findViewById(R.id.horoscope).setVisibility(View.GONE);
+
+        findViewById(R.id.button8).setVisibility(View.GONE);
+
         edate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -221,6 +227,9 @@ public class Daily_attendance_Edit extends AppCompatActivity {
 
                 sid = jsonObject1.getString("id");
 
+                findViewById(R.id.horoscope).setVisibility(View.VISIBLE);
+                findViewById(R.id.button8).setVisibility(View.VISIBLE);
+
                 tname.setText(jsonObject1.getString("name"));
                 tname.setText(jsonObject1.getString("mobile"));
 
@@ -241,7 +250,9 @@ public class Daily_attendance_Edit extends AppCompatActivity {
 
 
             }catch (Exception e){
-
+                findViewById(R.id.horoscope).setVisibility(View.GONE);
+                findViewById(R.id.button8).setVisibility(View.GONE);
+                Toast.makeText(Daily_attendance_Edit.this, "No Records Found", Toast.LENGTH_SHORT).show();
             }
         }
     }

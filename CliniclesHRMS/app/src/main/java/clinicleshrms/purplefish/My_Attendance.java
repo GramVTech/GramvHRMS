@@ -193,7 +193,7 @@ public class My_Attendance extends AppCompatActivity {
             progressDialog.dismiss();
             try{
                 int count = 0;
-                JSONObject jsonObject = new JSONObject(json_string);
+                JSONObject jsonObject = new JSONObject(json_string3);
                 JSONArray jsonArray = jsonObject.getJSONArray("products");
                 while(count<jsonArray.length()){
                     JSONObject jsonObject1 = jsonArray.getJSONObject(count);
@@ -256,7 +256,7 @@ public class My_Attendance extends AppCompatActivity {
         progressDialog = new ProgressDialog(My_Attendance.this);
         progressDialog.setMessage("Please Wait...!!!");
         progressDialog.setCanceledOnTouchOutside(false);
-
+        customAdapter = new CustomAdapter();
         month_spinner = findViewById(R.id.spinner);
         listView = findViewById(R.id.listView);
         listView.setDivider(null);
