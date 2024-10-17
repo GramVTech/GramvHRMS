@@ -31,6 +31,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -60,7 +61,23 @@ public class Daily_attendance extends AppCompatActivity {
     StringBuffer sb3 = new StringBuffer();
     String json_url3 = Url_interface.url+"Attendance/Attendance_Insert.php";
     String json_string3="";
-
+    StringBuffer sb2 = new StringBuffer();
+    String json_url2 = Url_interface.url+"get_remarks.php";
+    String json_string2="";
+    String suser_id = "",stdate = "",ssname="",ssmobile="";
+    List<String> Lcheck_in_time = new ArrayList<>();
+    List<String> Lcheck_out_time = new ArrayList<>();
+    List<String> Lcheck_in_time_attendance = new ArrayList<>();
+    List<String> Lcheck_out_time_attendance = new ArrayList<>();
+    List<String> Lcheck_in_location = new ArrayList<>();
+    List<String> Lcheck_out_location = new ArrayList<>();
+    List<String> Lcheck_in_lat_lon = new ArrayList<>();
+    List<String> Lcheck_out_lat_lon = new ArrayList<>();
+    List<String> Lremarks = new ArrayList<>();
+    List<String> Lwfh_location = new ArrayList<>();
+    List<String> Lwfh_lat_lon = new ArrayList<>();
+    List<String> Lcreated_on = new ArrayList<>();
+    String work_status="",swork_status="",spost_data="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -243,15 +260,35 @@ public class Daily_attendance extends AppCompatActivity {
             task_view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(Lcheck_status.get(i).equals("")){
-                        Toast.makeText(Daily_attendance.this, "No Remarks Found", Toast.LENGTH_SHORT).show();
-                    }else{
-                        if(leave_type_spinner.getSelectedItem().toString().equals("PRESENT")){
-
-                        }else if(leave_type_spinner.getSelectedItem().toString().equals("WORK FROM HOME")){
-
+                    suser_id = LId.get(i);
+                    stdate = Ldate.get(i);
+                    ssname = Lname.get(i);
+                    ssmobile = Lmobile.get(i);
+                    work_status = leave_type_spinner.getSelectedItem().toString();
+                    if(work_status.equals("WORK FROM HOME")){
+                        swork_status = "WORK FROM HOME";
+                        try {
+                            spost_data = URLEncoder.encode("user_id","UTF-8")+"="+URLEncoder.encode(suser_id,"UTF-8")+"&"
+                                    +URLEncoder.encode("date","UTF-8")+"="+ URLEncoder.encode(stdate,"UTF-8")+"&"
+                                    +URLEncoder.encode("status","UTF-8")+"="+ URLEncoder.encode(swork_status,"UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            throw new RuntimeException(e);
                         }
+                        progressDialog.show();
+                        new backgroundworker2().execute();
+                    }else{
+                        swork_status = "DAILY ATTENDANCE";
+                        try {
+                            spost_data = URLEncoder.encode("user_id","UTF-8")+"="+URLEncoder.encode(suser_id,"UTF-8")+"&"
+                                    +URLEncoder.encode("date","UTF-8")+"="+ URLEncoder.encode(stdate,"UTF-8")+"&"
+                                    +URLEncoder.encode("status","UTF-8")+"="+ URLEncoder.encode(swork_status,"UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            throw new RuntimeException(e);
+                        }
+                        progressDialog.show();
+                        new backgroundworker2().execute();
                     }
+
                 }
             });
             return view;
@@ -321,6 +358,124 @@ public class Daily_attendance extends AppCompatActivity {
 
             Intent intent = new Intent(Daily_attendance.this, main_menu.class);
             startActivity(intent);
+        }
+    }
+
+    public class backgroundworker2 extends AsyncTask<Void,Void,String> {
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            URL url= null;
+            try {
+                url = new URL(json_url2);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            try {
+                sb2=new StringBuffer();
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data = spost_data;
+                bufferedWriter.write(post_data);
+                Log.d("PostData",""+post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+                InputStream inputStream=httpURLConnection.getInputStream();
+                BufferedReader bufferedReader =new BufferedReader(new InputStreamReader(inputStream));
+                while((json_string2=bufferedReader.readLine())!=null)
+                {
+                    sb2.append(json_string2+"\n");
+                    Log.d("json_string2",""+json_string2);
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                Log.d("GGG",""+sb2.toString());
+                return sb2.toString().trim();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            json_string2 = result;
+            progressDialog.dismiss();
+            try{
+                int count =0;
+                JSONObject jsonObject = new JSONObject(json_string2);
+                JSONArray jsonArray = jsonObject.getJSONArray("products");
+
+                if(swork_status.equals("WORK FROM HOME")){
+                    while(count < jsonArray.length()){
+                        JSONObject jsonObject1 = jsonArray.getJSONObject(count);
+                        Lcreated_on.add(jsonObject1.getString("created_on"));
+                        Lwfh_lat_lon.add(jsonObject1.getString("lat_lon"));
+                        Lwfh_location.add(jsonObject1.getString("location"));
+                        Lremarks.add(jsonObject1.getString("remarks"));
+                        count++;
+                    }
+                    if(Lremarks.size()>0){
+                        CustomBottomSheet_WFH bottomSheet = new CustomBottomSheet_WFH(Daily_attendance.this,
+                                Lremarks,
+                                Lwfh_lat_lon,
+                                Lwfh_location,
+                                Lcreated_on,
+                                ssname,
+                                ssmobile,
+                                stdate
+                        );
+                        bottomSheet.show(getSupportFragmentManager(), "CustomBottomSheet_WFH");
+                    }
+
+                }
+
+                else{
+                    while(count < jsonArray.length()){
+                        JSONObject jsonObject1 = jsonArray.getJSONObject(count);
+                        Lcheck_in_time.add(jsonObject1.getString("check_in_time"));
+                        Lcheck_out_time.add(jsonObject1.getString("check_out_time"));
+                        Lcheck_in_time_attendance.add(jsonObject1.getString("check_in_time_attendance"));
+                        Lcheck_out_time_attendance.add(jsonObject1.getString("check_out_time_attendance"));
+                        Lcheck_in_location.add(jsonObject1.getString("check_in_location"));
+                        Lcheck_out_location.add(jsonObject1.getString("check_out_location"));
+                        Lcheck_in_lat_lon.add(jsonObject1.getString("check_in_lat_lon"));
+                        Lcheck_out_lat_lon.add(jsonObject1.getString("check_out_lat_lon"));
+                        Lremarks.add(jsonObject1.getString("remarks"));
+                        count++;
+                    }
+                    if(Lremarks.size()>0){
+                        CustomBottomSheet bottomSheet = new CustomBottomSheet(Daily_attendance.this,
+                                Lremarks,
+                                Lcheck_in_time,
+                                Lcheck_out_time,
+                                Lcheck_in_time_attendance,
+                                Lcheck_out_time_attendance,
+                                Lcheck_in_location,
+                                Lcheck_out_location,
+                                Lcheck_in_lat_lon,
+                                Lcheck_out_lat_lon,
+                                ssname,
+                                ssmobile,
+                                stdate
+                        );
+                        bottomSheet.show(getSupportFragmentManager(), "CustomBottomSheet");
+                    }
+
+                }
+
+
+
+            }catch (Exception e){
+
+            }
         }
     }
 

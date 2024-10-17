@@ -17,7 +17,7 @@
         app:cardElevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView20"
         app:strokeColor="@color/material_dynamic_neutral60"
         app:strokeWidth="0.6sp">
 
@@ -30,7 +30,7 @@
                 android:layout_width="1dp"
                 android:layout_height="0dp"
                 android:layout_marginEnd="64dp"
-                android:background="?android:attr/listDivider"
+                android:background="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -62,6 +62,7 @@
                 android:textColor="@color/red"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textView1d8"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <View
@@ -74,107 +75,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
-            <TextView
-                android:id="@+id/textView1a7"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/kanit"
-                android:text="IN TIME AND LOC"
-                android:textColor="@color/purple"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toTopOf="@+id/divider19"
-                app:layout_constraintEnd_toStartOf="@+id/divider"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider18" />
-
-            <TextView
-                android:id="@+id/textView1a8"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:fontFamily="@font/kanit"
-                android:text="12-01-2000 : 09-00 A.M"
-                android:textColor="@color/red"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView15"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider18" />
-
-            <View
-                android:id="@+id/divider19"
-                android:layout_width="377dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="8dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView15" />
-
-            <ImageView
-                android:id="@+id/imageView15"
-                android:layout_width="40sp"
-                android:layout_height="40sp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toStartOf="@+id/textView1a8"
-                app:layout_constraintTop_toBottomOf="@+id/divider18"
-                app:srcCompat="@mipmap/pin" />
-
-            <TextView
-                android:id="@+id/textView1b7"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/kanit"
-                android:text="OUT TIME AND LOC"
-                android:textColor="@color/purple"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toTopOf="@+id/divider20"
-                app:layout_constraintEnd_toStartOf="@+id/divider"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider19" />
-
-            <TextView
-                android:id="@+id/textView1b8"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:fontFamily="@font/kanit"
-                android:text="12-01-2000 : 09-00 A.M"
-                android:textColor="@color/red"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView16"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider19" />
-
             <View
                 android:id="@+id/divider20"
                 android:layout_width="377dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="8dp"
                 android:background="?android:attr/listDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView16" />
-
-            <ImageView
-                android:id="@+id/imageView16"
-                android:layout_width="40sp"
-                android:layout_height="40sp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toStartOf="@+id/textView1b8"
-                app:layout_constraintTop_toBottomOf="@+id/divider19"
-                app:srcCompat="@mipmap/pin" />
+                app:layout_constraintTop_toBottomOf="@+id/divider18" />
 
 
             <TextView
@@ -203,7 +111,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="@font/kanit"
-                android:text="I was Working Test Lab Reports With Multi Functionality"
+                android:text="-"
                 android:textColor="@color/red"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toTopOf="@+id/divider21"
@@ -257,7 +165,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="@font/kanit"
-                android:text="I was Working Test Lab Reports With Multi Functionality"
+                android:text="-"
                 android:textColor="@color/red"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toTopOf="@+id/divider22"
@@ -301,7 +209,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="@font/kanit"
-                android:text="I was Working Test Lab Reports With Multi Functionality"
+                android:text="-"
                 android:textColor="@color/red"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toTopOf="@+id/divider23"
@@ -346,7 +254,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="@font/kanit"
-                android:text="I was Working Test Lab Reports With Multi Functionality"
+                android:text="-"
                 android:textColor="@color/red"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toTopOf="@+id/divider24"
@@ -355,10 +263,19 @@
                 app:layout_constraintTop_toBottomOf="@id/divider23" />
 
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
+
+    <ImageView
+        android:id="@+id/imageView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_delete" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
